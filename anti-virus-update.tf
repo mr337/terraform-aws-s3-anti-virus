@@ -43,12 +43,28 @@ data "aws_iam_policy_document" "main_update" {
     actions = [
       "s3:GetObject",
       "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
       "s3:PutObject",
       "s3:PutObjectTagging",
       "s3:PutObjectVersionTagging",
     ]
 
     resources = ["arn:aws:s3:::${var.av_definition_s3_bucket}/${var.av_definition_s3_prefix}/*"]
+  }
+
+  statement {
+    sid = "s3HeadObject"
+
+    effect = "Allow"
+
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.av_definition_s3_bucket}",
+      "arn:aws:s3:::${var.av_definition_s3_bucket}/*",
+    ]
   }
 }
 
